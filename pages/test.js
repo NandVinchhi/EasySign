@@ -45,13 +45,13 @@ export default function Home() {
     function onResults(results) {
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      
+      console.log(drawC)
       canvasCtx.drawImage(
       results.image, 0, 0, canvasElement.width, canvasElement.height);
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS,
-                         {color: '#00FF00', lineWidth: 1});
+                         {color: '#00FF00', lineWidth: 3});
           // drawL(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 1});
         }
       }
@@ -92,10 +92,11 @@ export default function Home() {
   return (
     <>
       
-      <Container maxWidth="container.sm">
+      <Container >
       <Center h='full' bg="green">
         <video ref={videoref} style={{display: "None"}}></video>
         <canvas ref={canvasref} style={{borderRadius: "10px"}} width="450px" height="337px"></canvas>
+        
       </Center>
         
       </Container>

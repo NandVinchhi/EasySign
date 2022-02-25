@@ -12,7 +12,7 @@ import * as React from 'react'
 import { HiPlay } from 'react-icons/hi'
 import { NavbarLanding } from '../components/navbar/NavbarLanding.jsx'
 import { Features } from "../components/features/Features.jsx"
-
+import { Footer } from "../components/footer/Footer.jsx";
 export default function App() {
   return (
     <>
@@ -37,20 +37,20 @@ export default function App() {
               fontWeight="extrabold"
               letterSpacing="tight"
             >
-              #1 Interactive Platform to Learn Indian Sign Language.
+              #1 AI Platform to Learn Indian Sign Language.
             </Heading>
             <Text color={mode('gray.600', 'gray.400')} mt="4" fontSize="lg" fontWeight="medium">
               We pair AI technology with curated materials to ensure the best possible learning experience.
             </Text>
             <Stack direction={{ base: 'column', md: 'row' }} spacing="4" mt="8">
-              <Button size="lg" minW="210px" colorScheme="blue" height="14" px="8">
+              <Button as="a" href="/signup" size="lg" minW="210px" colorScheme="blue" height="14" px="8">
                 Sign Up to Get Started
               </Button>
               
             </Stack>
             <Text mt="8" color={mode('gray.600', 'gray.400')}>
               Already have an account?{' '}
-              <Link href="#" textDecoration="underline">
+              <Link href="/login" textDecoration="underline">
                 Log in
               </Link>
             </Text>
@@ -72,6 +72,7 @@ export default function App() {
       
     </Box>
     <Features/>
+    <Footer/>
 
     </>
   )
