@@ -29,14 +29,17 @@ export default function App (){
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const onSignup = () => {
     setLoading(true);
+    setSuccess(false);
     setErrorMessage("");
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         setLoading(false);
+        setSuccess(true);
         const user = userCredential.user;
         // ...
       })
@@ -110,6 +113,14 @@ export default function App (){
           <Text fontSize="sm" color="red.500">
             {errorMessage}
           </Text>
+
+          {success && (
+
+
+          <Text fontSize="sm" color="green.500">
+            Your account was created successfully. Log in to get started.
+          </Text>
+          )}
           
           <HStack>
           <Divider />
