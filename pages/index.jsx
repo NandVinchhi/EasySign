@@ -8,12 +8,26 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import * as React from 'react'
+import React, {useState, useEffect} from 'react'
 import { HiPlay } from 'react-icons/hi'
 import { NavbarLanding } from '../components/navbar/NavbarLanding.jsx'
 import { Features } from "../components/features/Features.jsx"
 import { Footer } from "../components/footer/Footer.jsx";
+import { useRouter } from 'next/router'
+import { getAuth } from "firebase/auth"
+
 export default function App() {
+  const router = useRouter()
+  const auth = getAuth();
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        router.push("/dashboard")
+      } 
+    });
+  }, [])
+
   return (
     <>
 

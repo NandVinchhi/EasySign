@@ -21,8 +21,10 @@ import React, { useState, useEffect } from 'react'
 import { GoogleIcon } from '../components/ProviderIcons'
 import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'next/router'
 
 export default function App (){
+  const router = useRouter()
   const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,6 +32,14 @@ export default function App (){
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        router.push("/dashboard")
+      } 
+    });
+  }, [])
 
   const onSignup = () => {
     setLoading(true);

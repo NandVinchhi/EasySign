@@ -4,10 +4,15 @@ import React, {useEffect, useState} from 'react';
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Center, Container } from '@chakra-ui/react'
+import { NavbarLanding } from '../components/navbar/NavbarLanding.jsx'
+import { useRouter } from 'next/router'
+import { getAuth } from "firebase/auth"
 
 export default function Home() {
   const [videoref, setVideoref] = useState(React.createRef());
   const [canvasref, setCanvasref] = useState(React.createRef());
+  const router = useRouter()
+  const auth = getAuth();
 
   function loadScript(src) {
     return new Promise(function(resolve, reject) {
@@ -33,6 +38,12 @@ export default function Home() {
   }
 
   useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        router.push("/login")
+      } 
+    });
+
     const videoElement = videoref.current;
     const canvasElement = canvasref.current;
     const canvasCtx = canvasElement.getContext('2d');
@@ -91,8 +102,9 @@ export default function Home() {
   
   return (
     <>
-      
+      <NavbarLanding></NavbarLanding>
       <Container >
+
       <Center h='full' bg="green">
         <video ref={videoref} style={{display: "None"}}></video>
         <canvas ref={canvasref} style={{borderRadius: "10px"}} width="450px" height="337px"></canvas>
