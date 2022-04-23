@@ -15,9 +15,15 @@ import {
 } from "@chakra-ui/react";
 import { MdArrowForward } from "react-icons/md";
 import * as React from "react";
+import { useRouter } from "next/router";
 import { CircularProgressBar } from "./CircularProgressBar";
 
-export const Card = () => {
+export const Card = (props) => {
+  const router = useRouter();
+
+  const onStart = () => {
+    router.push(props.redirect)
+  }
   return (
     <Box
       as="section"
@@ -39,23 +45,25 @@ export const Card = () => {
           
             
               <Text fontSize="2xl" fontWeight="bold">
-                Alphabets in ISL
+                {props.heading}
               </Text>
 
               <Text fontSize="md" mt="1">
-                Start your journey by learning the fundamental building blocks of Indian Sign Language. This lesson will cover all 26 alphabets.
+                {props.subheading}
+                
+                
               </Text>
 
-              <Progress hasStripe value={80} mt="4"/>
+              <Progress hasStripe value={parseInt(100 * props.remaining[0] / props.remaining[1])} mt="4"/>
               <HStack spacing="1" justify="space-between" mt="2">
                 <Text color="blue.600" fontSize="lg" fontWeight="bold">
-                  Level 4
+                  Level {props.level}
                 </Text>
                 <Text color="blue.600" fontSize="lg" fontWeight="bold">
-                  ⚡ 250 / 300
+                  ⚡ {props.remaining[0]} / {props.remaining[1]}
                 </Text>
                 <Text color="blue.600" fontSize="lg" fontWeight="bold">
-                  Level 5
+                  Level {props.level + 1}
                 </Text>
               </HStack>
 
@@ -69,18 +77,20 @@ export const Card = () => {
                     spacing="5"
                     style={{cursor: "pointer"}}
                   >
-                    <CircularProgressBar score={80}/>
-                    <CircularProgressBar score={40}/>
-                    <CircularProgressBar score={20}/>
-                    <CircularProgressBar score={70}/>
+                    {props.scores.map(x => (
+                      <CircularProgressBar score={2 * x}/>
+                    ))}
+                    
                   </Stack>
                 </Tooltip>
                 </Center>
                 <Button
                   colorScheme="teal"
                   size="lg"
+                  onClick={onStart}
                   variant="solid"
-                  rightIcon={<Icon as={MdArrowForward} />}
+                  rightIcon={<Icon as={MdArrowForward}
+                  />}
                 >
                   Start lesson
                 </Button>

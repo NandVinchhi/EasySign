@@ -119,7 +119,8 @@ export default function App (){
         addDoc(collection(db, "users"), {
           email: email,
           joined: current.toISOString(),
-          points: {alphabets: 0, numbers: 0}
+          points: {alphabets: 0, numbers: 0},
+          lastQuiz: {alphabets: 0, numbers: 0}
         }).then(() => {
           console.log("success");
         }).catch((error) => {

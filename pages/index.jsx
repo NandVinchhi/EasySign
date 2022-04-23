@@ -48,8 +48,8 @@ export default function App() {
               size="2xl"
               color={mode('blue.600', 'blue.300')}
               mt="8"
-              fontWeight="extrabold"
-              letterSpacing="tight"
+              fontWeight="800"
+              
             >
               #1 AI Platform to Learn Indian Sign Language.
             </Heading>
