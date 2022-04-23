@@ -1,5 +1,6 @@
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
+import { a } from "./RecordedSigns";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 import { Center, Container } from "@chakra-ui/react";
@@ -63,15 +64,35 @@ export const VideoCapture = () => {
         canvasElement.width,
         canvasElement.height
       );
+
+      function compareSigns(signs, letter) {
+        function compareSign(signToCompare, sign) {
+          for (let i = 0; i < sign.length; i++) {
+            if (
+              signToCompare[i] < sign[i] - 0.1 ||
+              signToCompare[i] > sign[i] + 0.1
+            ) {
+              return false;
+            }
+          }
+          return true;
+        }
+
+        return (
+          (compareSign(signs[0], letter[0]) &&
+            compareSign(signs[1], letter[1])) ||
+          (compareSign(signs[1], letter[0]) && compareSign(signs[0], letter[1]))
+        );
+      }
+
       function findAngle(A, B, C) {
-        let AB = Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2);
-        let BC = Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2);
-        let AC = Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2);
-        return (BC * BC + AB * AB - AC * AC) / (2 * Math.sqrt(BC * AB));
+        var AB = Math.sqrt(Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2));
+        var BC = Math.sqrt(Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2));
+        var AC = Math.sqrt(Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2));
+        return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
       }
 
       if (results.multiHandLandmarks) {
-
         const lines = [
           [4, 3, 2],
           [3, 2, 1],
@@ -101,16 +122,16 @@ export const VideoCapture = () => {
               landmarks[lines[i][1]],
               landmarks[lines[i][2]]
             );
-            console.log(angle);
             ang.push(angle);
           }
-          
+
           if (landmark_i === 0) {
             setLeftAngles(ang);
           } else {
             setRightAngles(ang);
           }
 
+          console.log(compareSigns([leftAngles, rightAngles], a));
 
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: "#00FF00",
