@@ -17,7 +17,8 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton
+  ModalCloseButton,
+  Image
 } from "@chakra-ui/react";
 import { VideoCapture } from "./VideoCapture";
 
@@ -27,6 +28,7 @@ export const Signing = (props) => {
   const [status, setStatus] = useState(props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]);
   const [score, setScore] = useState(0);
   const [isHint, setIsHint] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const nextLetter = (result) => {
     let tempStatus = status;
@@ -59,6 +61,17 @@ export const Signing = (props) => {
   // 0 - nothing, 1 - selected, 2 - green, 3 - orange, 4 - red
   return (
     <>
+      <Modal onClose={() => setIsOpen(false)} isOpen={isOpen} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Hint</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Image src={"/isl/" + props.question[letter].toUpperCase() + ".png"} w="full" mb="5"/>
+            </ModalBody>
+            
+          </ModalContent>
+        </Modal>
       <NavbarLanding />
       <Center>
         <Stack padding="4" spacing="6" marginTop="3rem">
@@ -95,7 +108,10 @@ export const Signing = (props) => {
           
           <Center>
             <HStack>
-              <Button size="lg" colorScheme="orange" alignSelf="center">
+              <Button onClick={() => {
+                setIsHint(true);
+                setIsOpen(true);
+              }} size="lg" colorScheme="orange" alignSelf="center">
                 Show Hint
               </Button>
               <Button onClick={() => nextLetter(0)} size="lg" colorScheme="red" alignSelf="center">
