@@ -4,7 +4,7 @@ import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { useRouter } from 'next/router'
 import { getAuth } from "firebase/auth"
 import {
-  
+  Box,
   Flex
 } from "@chakra-ui/react";
 export default function App() {
@@ -18,12 +18,13 @@ export default function App() {
     });
   }, [])
   return (
-    <>
+    <Box bg="gray.50" minHeight="100vh" h="full" pb="7">
       <NavbarLanding />
       
       <Card />
       <Card />
       
-    </>
+      
+    </Box>
   );
 }

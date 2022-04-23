@@ -8,6 +8,10 @@ import {
   Text,
   Progress,
   useColorModeValue,
+  HStack,
+  VStack,
+  Tooltip 
+
 } from "@chakra-ui/react";
 import { MdArrowForward } from "react-icons/md";
 import * as React from "react";
@@ -17,14 +21,14 @@ export const Card = () => {
   return (
     <Box
       as="section"
-      py={{
+      pt={{
         base: "4",
         md: "8",
       }}
     >
       <Container maxW="7xl">
         <Box
-          bg="bg-surface"
+          bg="white"
           boxShadow={useColorModeValue("sm", "sm-dark")}
           borderRadius="lg"
           p={{
@@ -32,46 +36,64 @@ export const Card = () => {
             md: "6",
           }}
         >
-          <Stack spacing="5">
-            <Stack spacing="3">
+          
+            
               <Text fontSize="2xl" fontWeight="bold">
                 Alphabets in ISL
               </Text>
 
-              <Text fontSize="md" >
-                StrengtLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              <Text fontSize="md" mt="1">
+                Start your journey by learning the fundamental building blocks of Indian Sign Language. This lesson will cover all 26 alphabets.
               </Text>
 
-              <Progress hasStripe value={80} />
-              <Text fontSize="md" fontWeight="light">
-                Level 4: You're almost there! Only {32} points left to go!
-              </Text>
-            </Stack>
-            <Center>
-              <Stack
-                direction={{
-                  base: "row",
-                  md: "row",
-                }}
-                spacing="5"
-              >
-                <CircularProgressBar score={80} label="Label 1" />
-                <CircularProgressBar score={40} label="Label 2" />
-                <CircularProgressBar score={20} label="Label 3" />
-                <CircularProgressBar score={70} label="Label 4" />
-              </Stack>
-            </Center>
+              <Progress hasStripe value={80} mt="4"/>
+              <HStack spacing="1" justify="space-between" mt="2">
+                <Text color="blue.600" fontSize="lg" fontWeight="bold">
+                  Level 4
+                </Text>
+                <Text color="blue.600" fontSize="lg" fontWeight="bold">
+                  ⚡ 250 / 300
+                </Text>
+                <Text color="blue.600" fontSize="lg" fontWeight="bold">
+                  Level 5
+                </Text>
+              </HStack>
 
-            <Stack spacing="5">
-              <Button
-                colorScheme="blue"
-                variant="solid"
-                rightIcon={<Icon as={MdArrowForward} />}
-              >
-                Start Lesson
-              </Button>
-            </Stack>
-          </Stack>
+              
+              <HStack spacing="1" justify="space-between" mt="6">
+                <Center>
+                <Tooltip label="Your most recent scores in this lesson" aria-label='A tooltip'>
+
+                  <Stack
+                    direction="row"
+                    spacing="5"
+                    style={{cursor: "pointer"}}
+                  >
+                    <CircularProgressBar score={80}/>
+                    <CircularProgressBar score={40}/>
+                    <CircularProgressBar score={20}/>
+                    <CircularProgressBar score={70}/>
+                  </Stack>
+                </Tooltip>
+                </Center>
+                <Button
+                  colorScheme="teal"
+                  size="lg"
+                  variant="solid"
+                  rightIcon={<Icon as={MdArrowForward} />}
+                >
+                  Start lesson
+                </Button>
+              </HStack>
+
+              
+            
+            
+
+            
+              
+            
+         
         </Box>
       </Container>
     </Box>
