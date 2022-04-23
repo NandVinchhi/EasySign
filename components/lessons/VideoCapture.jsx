@@ -53,7 +53,7 @@ export const VideoCapture = () => {
     function onResults(results) {
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      console.log(drawC);
+      
       canvasCtx.drawImage(
         results.image,
         0,
@@ -62,7 +62,9 @@ export const VideoCapture = () => {
         canvasElement.height
       );
       if (results.multiHandLandmarks) {
+
         for (const landmarks of results.multiHandLandmarks) {
+          console.log(landmarks)
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: "#00FF00",
             lineWidth: 3,
