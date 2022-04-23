@@ -14,7 +14,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [page, setPage] = useState(11);
+  const [page, setPage] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
   const [current, setCurrent] = useState(new Date());
 
@@ -40,7 +40,7 @@ export default function App() {
   const updateScore = (delta) => {
     setFinalScore(finalScore + delta);
 
-    setPage(page + 1);
+    setPage(page + 11);
 
     if (page == 11){
       console.log("need to update db");

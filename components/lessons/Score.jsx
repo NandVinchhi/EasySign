@@ -1,6 +1,9 @@
 import * as React from "react";
 import { NavbarLanding } from "../navbar/NavbarLanding";
-import CountUp from 'react-countup';
+
+import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
+
 import {
     chakra,
     Stat,
@@ -20,13 +23,20 @@ import {
 } from "@chakra-ui/react";
 
 export const Score = () => {
+    const { width, height } = useWindowSize()
+    
     return (
         <>
+        <Confetti
+          width={width}
+          zIndex={100}
+          height={height}
+        />
         <NavbarLanding />
         <Center>
           <Stack padding="4" spacing="6" marginTop='3rem'>
             <Center><Heading size="lg" mt="4">Your score is</Heading></Center>
-            <Center><Heading color="teal.500" size="4xl" mt="2"><CountUp start={1} end={100} duration={2} />%</Heading></Center>
+            <Center><Heading color="teal.500" size="4xl" mt="2">85%</Heading></Center>
             <Center><Heading size="sm" mt="4">You received 50 points.</Heading></Center>
             <Button size="lg" as="a" href="/dashboard" colorScheme={'blue'}>Go to Dashboard</Button>  
             
