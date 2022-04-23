@@ -15,6 +15,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
+  const [current, setCurrent] = useState(new Date());
 
   const router = useRouter();
   const auth = getAuth();
