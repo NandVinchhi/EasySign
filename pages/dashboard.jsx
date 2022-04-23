@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Card } from "../components/dashboard/Card";
-import { NavbarApp } from "../components/navbar/NavbarApp";
+import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { useRouter } from 'next/router'
 import { getAuth } from "firebase/auth"
 
@@ -16,7 +16,7 @@ export default function App() {
   }, [])
   return (
     <>
-      <NavbarApp />
+      <NavbarLanding />
       <Card />
       <Card />
     </>

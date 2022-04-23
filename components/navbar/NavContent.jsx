@@ -13,7 +13,7 @@ import { Image } from '@chakra-ui/react'
 import { NavLink } from './NavLink'
 import { NavMenu } from './NavMenu'
 import { useRouter } from 'next/router'
-import { getAuth } from "firebase/auth"
+import { getAuth, signOut } from "firebase/auth"
 
 
 
@@ -30,7 +30,11 @@ const DesktopNavContent = (props) => {
   }, [])
 
   const onLogout = () => {
-
+    signOut(auth).then(() => {
+      router.push("/login")
+    }).catch((error) => {
+      console.log("Logout failed.")
+    });
   }
   return (
     <Flex className="nav-content__desktop" align="center" justify="space-between" {...props}>
