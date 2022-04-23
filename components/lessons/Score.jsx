@@ -22,14 +22,14 @@ import {
     Heading
 } from "@chakra-ui/react";
 
-export const Score = () => {
+export const Score = (props) => {
     const { width, height } = useWindowSize()
     
     return (
         <>
         <Confetti
           width={width}
-          zIndex={100}
+          
           height={height}
         />
         <NavbarLanding />
