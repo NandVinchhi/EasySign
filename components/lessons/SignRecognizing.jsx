@@ -20,9 +20,9 @@ export const SignRecognizing = (props) => {
       <Center>
         <Stack padding="4" spacing="10" mt="4">
           <Image
-            src="http://www.milwaukeeindependent.com/wp-content/uploads/2019/06/062719_SignLanguage_01.jpg"
+            src={"/isl/" + props.question.toUpperCase() + ".png"}
             alt="Sign"
-            w="xl"
+            w="lg"
           />
 
           {stage == 0 && (
