@@ -1,4 +1,5 @@
 import { SignRecognizing } from "../components/lessons/SignRecognizing";
+import { Signing } from "../components/lessons/Signing";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
@@ -15,7 +16,7 @@ export default function App() {
   }, []);
   return (
     <>
-      <SignRecognizing />
+      <Signing />
     </>
   );
 }
