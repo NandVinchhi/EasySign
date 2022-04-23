@@ -143,10 +143,10 @@ export default function App() {
       {questions.map((question, i) => {
         if (i == page){
           if (question.length == 1){
-            return (<SignRecognizing questionNumber={i + 1} question={question} updateScore={updateScore}/>);
+            return (<SignRecognizing key={i} questionNumber={i + 1} question={question} updateScore={updateScore}/>);
           }
           else {
-            return (<Signing/>);
+            return (<Signing key={i} questionNumber={i + 1} question={question} updateScore={updateScore}/>);
           }
         }
       })}

@@ -19,12 +19,13 @@ export const SignRecognizing = (props) => {
       <NavbarLanding />
       <Center>
         <Stack padding="4" spacing="10" mt="4">
+          <Center>
           <Image
             src={"/isl/" + props.question.toUpperCase() + ".png"}
             alt="Sign"
             w="lg"
           />
-
+          </Center>
           {stage == 0 && (
             <>
           <Center><Text fontWeight="bold" fontSize="2xl">Enter the alphabet signed above.</Text></Center>
