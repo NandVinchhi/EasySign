@@ -38,7 +38,7 @@ export const Footer = () => (
           align="start"
         >
           <Image src="/logo.png" h="8"></Image>
-          <Text color="muted">Created by Nand Vinchhi, in association with VAANI Deaf Children's Foundation.</Text>
+          <Text color="muted">Created by Nand Vinchhi, Advik Kabra, and Pranav Goyal.</Text>
         </Stack>
         <SimpleGrid
           columns={{base: 2, md: 3}}
