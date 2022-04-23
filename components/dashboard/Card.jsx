@@ -1,14 +1,17 @@
 import {
   Box,
+  Button,
   Container,
   Center,
   Stack,
+  Icon,
   Text,
   Progress,
   useColorModeValue,
   CircularProgress,
   CircularProgressLabel,
 } from "@chakra-ui/react";
+import { MdArrowForward } from "react-icons/md";
 import * as React from "react";
 
 export const Card = () => {
@@ -37,7 +40,7 @@ export const Card = () => {
               </Text>
               <Progress hasStripe value={80} />
               <Text fontSize="md" fontWeight="light">
-                Level 4: You're almost there! Keep going 💪
+                Level 4: You're almost there! Only {32} points left to go!
               </Text>
             </Stack>
             <Center>
@@ -85,6 +88,16 @@ export const Card = () => {
                 </Stack>
               </Stack>
             </Center>
+
+            <Stack spacing="5">
+              <Button
+                colorScheme="green"
+                variant="solid"
+                rightIcon={<Icon as={MdArrowForward} />}
+              >
+                Start Lesson
+              </Button>
+            </Stack>
           </Stack>
         </Box>
       </Container>
