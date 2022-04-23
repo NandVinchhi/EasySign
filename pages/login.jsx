@@ -68,12 +68,7 @@ export default function App (){
             <Input id="password" placeholder="********" type="password" />
           </FormControl>
         </Stack>
-        <HStack justify="space-between">
-          <Checkbox defaultIsChecked>Remember me</Checkbox>
-          <Button variant="link" colorScheme="blue" size="sm" as="a" href="/forgotpassword">
-            Forgot password
-          </Button>
-        </HStack>
+        
         <Stack spacing="4">
           <Button colorScheme="blue">Sign in</Button>\
           <HStack>
@@ -88,14 +83,20 @@ export default function App (){
           </Button>
         </Stack>
       </Stack>
-      <HStack spacing="1" justify="center">
-        <Text fontSize="sm" color="muted">
-          Don't have an account?
-        </Text>
-        <Button variant="link" as="a" href="/signup" colorScheme="blue" size="sm">
-          Sign up
-        </Button>
-      </HStack>
+      <HStack justify="space-between">
+          <HStack spacing="1" justify="center">
+            <Text fontSize="sm" color="muted">
+              Don't have an account?
+            </Text>
+            <Button variant="link" as="a" href="/signup" colorScheme="blue" size="sm">
+              Sign up
+            </Button>
+          </HStack>
+          <Button variant="link" colorScheme="blue" size="sm" as="a" href="/forgotpassword">
+            Forgot password
+          </Button>
+        </HStack>
+      
     </Stack>
   </Container>
   </>
