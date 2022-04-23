@@ -65,7 +65,7 @@ const DesktopNavContent = (props) => {
 
       {loggedIn && (
         <HStack spacing="8" justify="space-between">
-          <Button onClick={onLogout} colorScheme="blue" fontWeight="normal">
+          <Button onClick={onLogout} colorScheme="blue" fontWeight="bold">
             Log out
           </Button>
         </HStack>
