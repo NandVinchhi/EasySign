@@ -18,7 +18,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import { GoogleIcon } from '../components/ProviderIcons'
 import { NavbarLanding } from "../components/navbar/NavbarLanding";
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from "firebase/auth";
+import { getAuth, setPersistence, signInWithEmailAndPassword, browserLocalPersistence, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from 'next/router'
 
 export default function App (){

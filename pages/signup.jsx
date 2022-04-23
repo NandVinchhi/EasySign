@@ -22,8 +22,11 @@ import { GoogleIcon } from '../components/ProviderIcons'
 import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'next/router'
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 
 export default function App (){
+  const db = getFirestore();
   const router = useRouter()
   const auth = getAuth();
   const [email, setEmail] = useState("");
@@ -51,6 +54,17 @@ export default function App (){
         setLoading(false);
         setSuccess(true);
         const user = userCredential.user;
+        const current = new Date()
+        addDoc(collection(db, "users"), {
+          email: email,
+          joined: current.toISOString(),
+          points: {alphabets: 0, numbers: 0}
+        }).then(() => {
+          console.log("success");
+        }).catch((error) => {
+          console.log("error adding")
+          console.log(error)
+        });
         // ...
       })
       .catch((error) => {
