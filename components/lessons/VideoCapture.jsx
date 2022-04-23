@@ -94,7 +94,8 @@ export const VideoCapture = () => {
         ) {
           let ang = [];
           const landmarks = results.multiHandLandmarks[landmark_i];
-          for (let i = 0; i < lines.size; i++) {
+
+          for (let i = 0; i < lines.length; i++) {
             let angle = findAngle(
               landmarks[lines[i][0]],
               landmarks[lines[i][1]],
@@ -103,7 +104,7 @@ export const VideoCapture = () => {
             console.log(angle);
             ang.push(angle);
           }
-
+          
           if (landmark_i === 0) {
             setLeftAngles(ang);
           } else {
