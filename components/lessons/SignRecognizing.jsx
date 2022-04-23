@@ -14,7 +14,7 @@ export const SignRecognizing = () => {
     <>
       <NavbarLanding />
       <Center>
-        <Stack padding="4" spacing="6" marginTop="3rem">
+        <Stack padding="4" spacing="10" marginTop="3rem">
           <Image
             src="http://www.milwaukeeindependent.com/wp-content/uploads/2019/06/062719_SignLanguage_01.jpg"
             alt="Sign"
