@@ -10,6 +10,8 @@ import { getAuth } from "firebase/auth";
 export const VideoCapture = () => {
   const [videoref, setVideoref] = useState(React.createRef());
   const [canvasref, setCanvasref] = useState(React.createRef());
+  const [leftAngles, setLeftAngles] = useState([]);
+  const [rightAngles, setRightAngles] = useState([]);
   const router = useRouter();
   const auth = getAuth();
 
@@ -53,7 +55,6 @@ export const VideoCapture = () => {
     function onResults(results) {
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      console.log(drawC);
       canvasCtx.drawImage(
         results.image,
         0,
@@ -61,8 +62,52 @@ export const VideoCapture = () => {
         canvasElement.width,
         canvasElement.height
       );
+      function findAngle(A, B, C) {
+        let AB = Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2);
+        let BC = Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2);
+        let AC = Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2);
+        return (BC * BC + AB * AB - AC * AC) / (2 * Math.sqrt(BC * AB));
+      }
+
       if (results.multiHandLandmarks) {
-        for (const landmarks of results.multiHandLandmarks) {
+        const lines = [
+          [4, 3, 2],
+          [3, 2, 1],
+          [2, 1, 0],
+          [8, 7, 6],
+          [7, 6, 5],
+          [6, 5, 0],
+          [12, 11, 10],
+          [11, 10, 9],
+          [16, 15, 14],
+          [15, 14, 13],
+          [20, 19, 18],
+          [19, 18, 17],
+          [18, 17, 0],
+        ];
+        for (
+          let landmark_i = 0;
+          landmark_i < results.multiHandLandmarks.length;
+          landmark_i++
+        ) {
+          let ang = [];
+          const landmarks = results.multiHandLandmarks[landmark_i];
+          for (let i = 0; i < lines.size; i++) {
+            let angle = findAngle(
+              landmarks[lines[i][0]],
+              landmarks[lines[i][1]],
+              landmarks[lines[i][2]]
+            );
+            console.log(angle);
+            ang.push(angle);
+          }
+
+          if (landmark_i === 0) {
+            setLeftAngles(ang);
+          } else {
+            setRightAngles(ang);
+          }
+
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: "#00FF00",
             lineWidth: 3,
