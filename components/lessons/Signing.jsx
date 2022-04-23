@@ -9,7 +9,8 @@ import {
   Tabs,
   TabList,
   Text,
-  HStack
+  HStack,
+  Box
 } from "@chakra-ui/react";
 import { VideoCapture } from "./VideoCapture";
 
@@ -19,12 +20,15 @@ export const Signing = () => {
       <NavbarLanding />
       <Center>
         <Stack padding="4" spacing="6" marginTop="3rem">
-          <HStack>
-            <Button style={{cursor: "default"}} _hover={{background: "green.500"}} colorScheme="green" bg="green.500" w="10">H</Button>
-            <Button colorScheme="green" bg="green.500" w="10">E</Button>
-            <Button colorScheme="green" bg="green.500" w="10">L</Button>
-            <Button colorScheme="green" bg="green.500" w="10">L</Button>
+          <Center>
+            <HStack>
+          
+            <Box h="10" w="10" p="2" bg="green.500" color="white" borderRadius="3"><Center><Text fontSize="lg" fontWeight="extrabold">D</Text></Center></Box>
+            <Box h="10" w="10" p="2" bg="green.500" color="white" borderRadius="3"><Center><Text fontSize="lg" fontWeight="extrabold">D</Text></Center></Box>
+            <Box h="10" w="10" p="2" bg="green.500" color="white" borderRadius="3"><Center><Text fontSize="lg" fontWeight="extrabold">D</Text></Center></Box>
           </HStack>
+          </Center>
+          
 
           <VideoCapture />
 
