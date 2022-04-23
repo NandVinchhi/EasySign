@@ -1,5 +1,6 @@
 import { SignRecognizing } from "../components/lessons/SignRecognizing";
 import { Signing } from "../components/lessons/Signing";
+import { Score } from "../components/lessons/Score";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
@@ -13,7 +14,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(11);
   const [finalScore, setFinalScore] = useState(0);
   const [current, setCurrent] = useState(new Date());
 
@@ -127,6 +128,10 @@ export default function App() {
           }
         }
       })}
+
+      {page == 11 && (
+        <Score/>
+      )}
 
     </>
   );

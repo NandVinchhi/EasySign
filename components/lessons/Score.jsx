@@ -1,5 +1,6 @@
 import * as React from "react";
 import { NavbarLanding } from "../navbar/NavbarLanding";
+import CountUp from 'react-countup';
 import {
     chakra,
     Stat,
@@ -14,7 +15,8 @@ import {
     calc,
     Center,
     Button,
-    Spacer
+    Spacer,
+    Heading
 } from "@chakra-ui/react";
 
 export const Score = () => {
@@ -23,16 +25,13 @@ export const Score = () => {
         <NavbarLanding />
         <Center>
           <Stack padding="4" spacing="6" marginTop='3rem'>
-            <Stat w='692px' h='160px' border='1px' borderColor='#E2E8F0' borderRadius='12px' padding='24px'>
-                <StatLabel>Your Score</StatLabel>
-                <Center>
-                    <StatNumber>4/5</StatNumber>
-                </Center>
-            </Stat>
-            <Spacer /> 
-            <Flex direction={'column'} align='center'>
-                <Button w='132px' h='40px' colorScheme={'blue'}>View Results</Button>
-            </Flex>            
+            <Center><Heading size="lg" mt="4">Your score is</Heading></Center>
+            <Center><Heading color="teal.500" size="4xl" mt="2"><CountUp start={1} end={100} duration={2} />%</Heading></Center>
+            <Center><Heading size="sm" mt="4">You received 50 points.</Heading></Center>
+            <Button size="lg" as="a" href="/dashboard" colorScheme={'blue'}>Go to Dashboard</Button>  
+            
+            
+                     
           </Stack>
         </Center>
       </>
