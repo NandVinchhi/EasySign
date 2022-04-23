@@ -55,10 +55,7 @@ export const VideoCapture = () => {
     function onResults(results) {
       canvasCtx.save();
       canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-<<<<<<< HEAD
-=======
-      
->>>>>>> f2bd6e5ad96c6d4d876c34ab8f8c29309fc10d94
+
       canvasCtx.drawImage(
         results.image,
         0,
@@ -74,7 +71,7 @@ export const VideoCapture = () => {
       }
 
       if (results.multiHandLandmarks) {
-<<<<<<< HEAD
+
         const lines = [
           [4, 3, 2],
           [3, 2, 1],
@@ -113,11 +110,7 @@ export const VideoCapture = () => {
             setRightAngles(ang);
           }
 
-=======
 
-        for (const landmarks of results.multiHandLandmarks) {
-          console.log(landmarks)
->>>>>>> f2bd6e5ad96c6d4d876c34ab8f8c29309fc10d94
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: "#00FF00",
             lineWidth: 3,
