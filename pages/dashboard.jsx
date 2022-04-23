@@ -3,7 +3,10 @@ import { Card } from "../components/dashboard/Card";
 import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { useRouter } from 'next/router'
 import { getAuth } from "firebase/auth"
-
+import {
+  
+  Flex
+} from "@chakra-ui/react";
 export default function App() {
   const router = useRouter()
   const auth = getAuth();
@@ -17,8 +20,10 @@ export default function App() {
   return (
     <>
       <NavbarLanding />
+      
       <Card />
       <Card />
+      
     </>
   );
 }
