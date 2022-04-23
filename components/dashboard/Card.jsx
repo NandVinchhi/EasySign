@@ -36,6 +36,9 @@ export const Card = () => {
                 Lesson 1
               </Text>
               <Progress hasStripe value={80} />
+              <Text fontSize="md" fontWeight="light">
+                Level 4: You're almost there! Keep going 💪
+              </Text>
             </Stack>
             <Center>
               <Stack
