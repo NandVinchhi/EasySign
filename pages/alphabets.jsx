@@ -40,7 +40,7 @@ export default function App() {
   const updateScore = (delta) => {
     setFinalScore(finalScore + delta);
 
-    setPage(page + 1);
+    setPage(page + 11);
 
     if (page == 11){
       console.log("need to update db");
