@@ -7,22 +7,40 @@ import {
   useDisclosure,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image } from '@chakra-ui/react'
 
 import { NavLink } from './NavLink'
 import { NavMenu } from './NavMenu'
+import { useRouter } from 'next/router'
+import { getAuth } from "firebase/auth"
 
 
 
 const DesktopNavContent = (props) => {
+  const router = useRouter()
+  const auth = getAuth();
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        setLoggedIn(true);
+      } 
+    });
+  }, [])
+
+  const onLogout = () => {
+
+  }
   return (
     <Flex className="nav-content__desktop" align="center" justify="space-between" {...props}>
       <Box mt="3" mb="3" as="a" href="/" rel="home">
         <VisuallyHidden>EasySign</VisuallyHidden>
         <Image h="8" src="/logo.png" />
       </Box>
-      
+      {!loggedIn && (
+
+
       <HStack spacing="8" justify="space-between">
         <Box as="a" href="/login" color={mode('blue.600', 'blue.300')} fontWeight="bold">
           Log In
@@ -31,6 +49,16 @@ const DesktopNavContent = (props) => {
           Sign Up
         </Button>
       </HStack>
+      )}
+
+      {loggedIn && (
+        <HStack spacing="8" justify="space-between">
+        
+        <Button as="a" onClick = {onLogout}colorScheme="blue" fontWeight="bold">
+          Log out
+        </Button>
+      </HStack>
+      )}
     </Flex>
   )
 }
