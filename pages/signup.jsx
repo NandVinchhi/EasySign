@@ -20,12 +20,13 @@ import React, { useState, useEffect } from 'react'
 
 import { GoogleIcon } from '../components/ProviderIcons'
 import { NavbarLanding } from "../components/navbar/NavbarLanding";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, setPersistence, browserLocalPersistence, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 import { useRouter } from 'next/router'
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
 
 
 export default function App (){
+  const provider = new GoogleAuthProvider();
   const db = getFirestore();
   const router = useRouter()
   const auth = getAuth();
@@ -38,11 +39,71 @@ export default function App (){
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
-      if (user) {
+      if (user && !loading) {
         router.push("/dashboard")
       } 
     });
   }, [])
+
+  const onGoogle = () => {
+    setLoading(true);
+    setErrorMessage("");
+    setPersistence(auth, browserLocalPersistence).then(() => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          
+          const q = query(collection(db, "users"), where("email", "==", user.email));
+          
+          getDocs(q).then((result) => {
+            let final = 0;
+            result.forEach((doc) => {
+              
+              final += 1;
+            });
+            
+            if (final == 0){
+            const current = new Date()
+              addDoc(collection(db, "users"), {
+                email: user.email,
+                joined: current.toISOString(),
+                points: {alphabets: 0, numbers: 0}
+              }).then(() => {
+                
+                setLoading(false);
+              }).catch((error) => {
+                
+                console.log(error)
+                setLoading(false);
+              });
+            }
+
+          }).catch((error) => {
+            setLoading(false);
+            console.log(error)
+          })
+          
+          
+          // ...
+        }).catch((error) => {
+          // Handle Errors here.
+          setLoading(false);
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(error.message);
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
+    })
+  }
 
   const onSignup = () => {
     setLoading(true);
@@ -153,7 +214,7 @@ export default function App (){
           </Text>
           <Divider />
         </HStack>
-          <Button disabled={loading} variant="outline" bg="white" colorScheme="gray" leftIcon={<GoogleIcon boxSize="5" />} iconSpacing="3">
+          <Button onClick={onGoogle} disabled={loading} variant="outline" bg="white" colorScheme="gray" leftIcon={<GoogleIcon boxSize="5" />} iconSpacing="3">
             Continue with Google
           </Button>
         </Stack>
