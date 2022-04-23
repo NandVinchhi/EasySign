@@ -54,7 +54,7 @@ export const SignRecognizing = (props) => {
             else {
               setStage(2);
             }
-          }} size="lg" colorScheme="blue" alignSelf="center">
+          }} size="lg" disabled={answer.length == 0} colorScheme="blue" alignSelf="center">
             Submit
           </Button>
 

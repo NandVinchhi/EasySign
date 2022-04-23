@@ -36,8 +36,8 @@ export const Score = (props) => {
         <Center>
           <Stack padding="4" spacing="6" marginTop='3rem'>
             <Center><Heading size="lg" mt="4">Your score is</Heading></Center>
-            <Center><Heading color="teal.500" size="4xl" mt="2">85%</Heading></Center>
-            <Center><Heading size="sm" mt="4">You received 50 points.</Heading></Center>
+            <Center><Heading color="teal.500" size="4xl" mt="2">{props.score * 2}%</Heading></Center>
+            <Center><Heading size="sm" mt="4">You received {props.score} points.</Heading></Center>
             <Button size="lg" as="a" href="/dashboard" colorScheme={'blue'}>Go to Dashboard</Button>  
             
             

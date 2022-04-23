@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 import { words3 } from "./data";
 import { words4 } from "./data";
-import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { Box, Spinner, Center } from "@chakra-ui/react";
 
 export default function App() {
@@ -16,8 +16,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [page, setPage] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
-  const [current, setCurrent] = useState(new Date());
-
+  
   const router = useRouter();
   const auth = getAuth();
   const db = getFirestore();
@@ -40,11 +39,30 @@ export default function App() {
   const updateScore = (delta) => {
     setFinalScore(finalScore + delta);
 
-    setPage(page + 1);
+    
 
-    if (page == 11){
-      console.log("need to update db");
+    if (page == 10){
+      console.log("hi")
+      
+      addDoc(collection(db, "scores"), {
+        email: email,
+        number: data.lastQuiz.alphabets + 1,
+        score: finalScore,
+        type: 'alphabet'
+      }).then(() => {
+        
+        updateDoc(doc(db, "users", data.docId), {
+          points: {alphabets: data.points.alphabets + finalScore, numbers: data.points.numbers}, lastQuiz: {alphabets: data.lastQuiz.alphabets + 1, numbers: data.lastQuiz.numbers}
+        }).then(() => {
+          console.log("success")
+        })
+      }).catch((error) => {
+        
+        console.log(error)
+        
+      });
     }
+    setPage(page + 1);
   }
 
   const getRandom = (arr, n) => {
@@ -94,10 +112,14 @@ export default function App() {
         const q = query(collection(db, "users"), where("email", "==", user.email));
         getDocs(q).then((result) => {
             let data = {};
+            let docId = "";
             result.forEach((doc) => {
               data = doc.data();
+              docId = doc.id;
             });
+            data.docId = docId
             setData(data);
+            
             const level = calculateLevel(data.points.alphabets);
             setQuestions(generateQuiz(level));
             
@@ -130,7 +152,7 @@ export default function App() {
       })}
 
       {page == 11 && (
-        <Score/>
+        <Score score={finalScore}/>
       )}
 
     </>
