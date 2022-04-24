@@ -86,13 +86,13 @@ export const Signing = (props) => {
     
   }
 
-  useEffect(() => {
-    document.addEventListener('keyup', event => {
-      if (event.code === 'Space') {
-        nextLetter(1) //whatever you want to do when space is pressed
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //   document.addEventListener('keyup', event => {
+  //     if (event.code === 'Space') {
+  //       nextLetter(1) //whatever you want to do when space is pressed
+  //     }
+  //   })
+  // }, [])
   // 0 - nothing, 1 - selected, 2 - green, 3 - orange, 4 - red
   return (
     <>

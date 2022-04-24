@@ -14,7 +14,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [finalScore, setFinalScore] = useState(0);
   
   const router = useRouter();
