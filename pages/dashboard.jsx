@@ -4,7 +4,7 @@ import { NavbarLanding } from "../components/navbar/NavbarLanding";
 import { useRouter } from 'next/router'
 import { getAuth } from "firebase/auth"
 import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { Box } from "@chakra-ui/react";
+import { Box, Heading, Center } from "@chakra-ui/react";
 
 export default function App() {
   const router = useRouter()
@@ -125,9 +125,10 @@ export default function App() {
   return (
     <Box bg="gray.50" minHeight="100vh" h="full" pb="7">
       <NavbarLanding />
+      <Center><Heading size="lg" mt="6">Your Lessons</Heading></Center>
       
       <Card redirect="/alphabets" scores={alphabetScores} level={calculateLevel(alphabetPoints)} remaining={calculateRemaining(alphabetPoints)} heading="Alphabets in ISL" subheading="Start your journey by learning the fundamental building blocks of Indian Sign Language. This lesson will cover all 26 alphabets."/>
-      <Card redirect="/numbers" scores={numberScores} level={calculateLevel(numberPoints)} remaining={calculateRemaining(numberPoints)} heading="Numbers in ISL" subheading="Numbers are a vital part of any language and ISL is no exception. You will learn to sign 0-9 as well as construct larger numbers."/>
+      {/* <Card redirect="/numbers" scores={numberScores} level={calculateLevel(numberPoints)} remaining={calculateRemaining(numberPoints)} heading="Numbers in ISL" subheading="Numbers are a vital part of any language and ISL is no exception. You will learn to sign 0-9 as well as construct larger numbers."/> */}
       
       
       

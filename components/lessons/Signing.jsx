@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useReducer } from "react";
 import { NavbarLanding } from "../navbar/NavbarLanding";
 import {
   Center,
@@ -24,14 +24,22 @@ import { VideoCapture } from "./VideoCapture";
 
 export const Signing = (props) => {
 
+
   const [letter, setLetter] = useState(0);
-  const [status, setStatus] = useState(props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]);
+
+  function reducer (status, action){
+    return {value: action.value}
+  }
+  const [status, setStatus] = useReducer(reducer, {value: props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]});
+  // const [status, setStatus] = useState(props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]);
   const [score, setScore] = useState(0);
   const [isHint, setIsHint] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [queue, setQueue] = useState(0)
 
   const nextLetter = (result) => {
-    let tempStatus = status;
+    setQueue(0)
+    let tempStatus = status.value;
     if (result == 1){
       if (isHint){
         setScore(score + 1);
@@ -53,11 +61,38 @@ export const Signing = (props) => {
     }
     else {
       tempStatus[letter + 1] = 1
+      console.log(tempStatus)
+      setStatus({value: tempStatus})
+      
       setLetter(letter + 1);
     }
 
   }
 
+  const updateQueue = (val) => {
+
+    // nextLetter(1);
+    // console.log(val)
+    // console.log(queue)
+    // if (val > 0.2){
+    //   setQueue(0)
+    // }
+    // else {
+    //   setQueue(queue + 1)
+    //   if (queue + 1 > 10){
+    //     nextLetter(1);
+    //   }
+    // }
+    
+  }
+
+  useEffect(() => {
+    document.addEventListener('keyup', event => {
+      if (event.code === 'Space') {
+        nextLetter(1) //whatever you want to do when space is pressed
+      }
+    })
+  }, [])
   // 0 - nothing, 1 - selected, 2 - green, 3 - orange, 4 - red
   return (
     <>
@@ -78,7 +113,7 @@ export const Signing = (props) => {
           <Center>
             <HStack>
             {props.question.toUpperCase().split("").map((k, i) => {
-              let s = status[i]
+              let s = status.value[i]
 
               if (s == 0){
                 return (<Box h="10" w="10" p="2" borderRadius="3"><Center><Text  fontWeight="extrabold">{k}</Text></Center></Box>)
@@ -102,7 +137,7 @@ export const Signing = (props) => {
           </Center>
           
 
-          <VideoCapture />
+          <VideoCapture updateQueue={updateQueue} letter={props.question[letter].toUpperCase()}/>
 
           <Center><Text fontWeight="bold" fontSize="2xl">Sign the letters of the above word.</Text></Center>
           
@@ -117,6 +152,7 @@ export const Signing = (props) => {
               <Button onClick={() => nextLetter(0)} size="lg" colorScheme="red" alignSelf="center">
                 Skip
               </Button>
+              
             </HStack>
           </Center>
           <Center><Progress width="xl" value={parseInt(100 * props.questionNumber / 11)} hasStripe /></Center>

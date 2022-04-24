@@ -1,6 +1,6 @@
 import Script from "next/script";
 import React, { useEffect, useState } from "react";
-import { a } from "./RecordedSigns";
+import { referenceData } from "./RecordedSigns";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
 import { Center, Container } from "@chakra-ui/react";
@@ -8,13 +8,35 @@ import { NavbarLanding } from "../navbar/NavbarLanding.jsx";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 
-export const VideoCapture = () => {
+export const VideoCapture = (props) => {
   const [videoref, setVideoref] = useState(React.createRef());
   const [canvasref, setCanvasref] = useState(React.createRef());
-  const [leftAngles, setLeftAngles] = useState([]);
-  const [rightAngles, setRightAngles] = useState([]);
+  
   const router = useRouter();
   const auth = getAuth();
+
+  function compare(a, b){
+    let final = 0;
+      for (let i = 0 ; i < a.length; i++){
+        final += Math.abs(a[i] - b[i])
+      }
+
+    final = final / a.length;
+    return final;
+  }
+
+  function getRelativeCoords(landmarks){
+    let final = []
+    let quotient = (landmarks[0].x - landmarks[17].x) * (landmarks[0].x - landmarks[17].x) + (landmarks[0].y - landmarks[17].y) * (landmarks[0].y - landmarks[17].y) + (landmarks[0].z - landmarks[17].z) * (landmarks[0].z - landmarks[17].z) 
+    quotient = Math.sqrt(quotient)
+    for (let i = 0 ; i < landmarks.length; i++){
+      let distancex = Math.abs(landmarks[i].x - landmarks[0].x)
+      let distancey = Math.abs(landmarks[i].y - landmarks[0].y)
+      final.push(distancex/quotient);
+      final.push(distancey/quotient);
+    }
+    return final;
+  }
 
   function loadScript(src) {
     return new Promise(function (resolve, reject) {
@@ -52,6 +74,7 @@ export const VideoCapture = () => {
     let camera = null;
     let drawC = null;
     let drawL = null;
+    const counter = 0;
 
     function onResults(results) {
       canvasCtx.save();
@@ -65,80 +88,67 @@ export const VideoCapture = () => {
         canvasElement.height
       );
 
-      function compareSigns(signs, letter) {
-        function compareSign(signToCompare, sign) {
-          for (let i = 0; i < sign.length; i++) {
-            if (
-              signToCompare[i] < sign[i] - 0.1 ||
-              signToCompare[i] > sign[i] + 0.1
-            ) {
-              return false;
-            }
-          }
-          return true;
-        }
-
-        return (
-          (compareSign(signs[0], letter[0]) &&
-            compareSign(signs[1], letter[1])) ||
-          (compareSign(signs[1], letter[0]) && compareSign(signs[0], letter[1]))
-        );
-      }
-
-      function findAngle(A, B, C) {
-        var AB = Math.sqrt(Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2));
-        var BC = Math.sqrt(Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2));
-        var AC = Math.sqrt(Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2));
-        return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
-      }
+    
 
       if (results.multiHandLandmarks) {
-        const lines = [
-          [4, 3, 2],
-          [3, 2, 1],
-          [2, 1, 0],
-          [8, 7, 6],
-          [7, 6, 5],
-          [6, 5, 0],
-          [12, 11, 10],
-          [11, 10, 9],
-          [16, 15, 14],
-          [15, 14, 13],
-          [20, 19, 18],
-          [19, 18, 17],
-          [18, 17, 0],
-        ];
-        for (
-          let landmark_i = 0;
-          landmark_i < results.multiHandLandmarks.length;
-          landmark_i++
-        ) {
-          let ang = [];
+        
+        let f = []
+
+        
+        for (let landmark_i = 0; landmark_i < results.multiHandLandmarks.length; landmark_i++) {
+          
           const landmarks = results.multiHandLandmarks[landmark_i];
-
-          for (let i = 0; i < lines.length; i++) {
-            let angle = findAngle(
-              landmarks[lines[i][0]],
-              landmarks[lines[i][1]],
-              landmarks[lines[i][2]]
-            );
-            ang.push(angle);
-          }
-
-          if (landmark_i === 0) {
-            setLeftAngles(ang);
-          } else {
-            setRightAngles(ang);
-          }
-
-          console.log(compareSigns([leftAngles, rightAngles], a));
-
+          f.push(getRelativeCoords(landmarks));
+          
           drawC(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: "#00FF00",
             lineWidth: 3,
           });
           // drawL(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 1});
         }
+
+        let a = referenceData[props.letter]
+              
+
+        if (a.length == f.length){
+          if (a.length == 2){
+            // console.log(f)
+            let val1 = compare(a[0].concat(a[1]), f[0].concat(f[1]))
+            let val2 = compare(a[1].concat(a[0]), f[0].concat(f[1]))
+            if (val1 > val2){
+
+
+              counter += 1;
+              
+
+              if (counter >= 100){
+                props.updateQueue(val2)
+                counter = 0;
+              }
+              
+            }
+            else {
+              counter += 1;
+              
+              if (counter >= 100){
+                props.updateQueue(val1)
+                counter = 0;
+              }
+            }
+
+          }
+          else if (a.length == 1){
+            let val3 = compare(a[0], f[0])
+            counter += 1;
+              
+            if (counter >= 100){
+                props.updateQueue(val3)
+                counter = 0;
+              }
+          }
+        }
+        
+        
       }
       canvasCtx.restore();
     }
