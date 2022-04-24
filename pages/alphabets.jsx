@@ -4,8 +4,8 @@ import { Score } from "../components/lessons/Score";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
-import { words3 } from "./data";
-import { words4 } from "./data";
+import { words3 } from "../components/data";
+import { words4 } from "../components/data";
 import { getFirestore, collection, addDoc, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { Box, Spinner, Center } from "@chakra-ui/react";
 
