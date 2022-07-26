@@ -21,79 +21,121 @@ import {
   Image
 } from "@chakra-ui/react";
 import { VideoCapture } from "./VideoCapture";
-
+import { referenceData } from "./RecordedSigns";
 export const Signing = (props) => {
 
-
-  const [letter, setLetter] = useState(0);
 
   function reducer (status, action){
     return {value: action.value}
   }
-  const [status, setStatus] = useReducer(reducer, {value: props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]});
+  const [status, setStatus] = useState(props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]);
+
   // const [status, setStatus] = useState(props.question.length == 3 ? [1, 0, 0]: [1, 0, 0, 0]);
-  const [score, setScore] = useState(0);
-  const [isHint, setIsHint] = useState(false);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  
+  
   const [isOpen, setIsOpen] = useState(false);
-  const [queue, setQueue] = useState(0)
+  let queue = 0;
+  let score = 0;
+  let isHint = false;
+
+  const getLetter = (k) => {
+    const final = 0;
+    for (let i = 0; i < k.length; i++){
+      if (k[i] == 1){
+        final = i;
+      }
+    }
+
+    return final
+  }
 
   const nextLetter = (result) => {
-    setQueue(0)
-    let tempStatus = status.value;
+    queue = 0;
+    let tempStatus = status;
+    let tempLetter = getLetter(tempStatus);
     if (result == 1){
       if (isHint){
-        setScore(score + 1);
-        tempStatus[letter] = 3;
+        score += 1;
+        tempStatus[tempLetter] = 3;
       }
       else {
-        setScore(score + 2);
-        tempStatus[letter] = 2;
+        score += 2
+        tempStatus[tempLetter] = 2;
       }
     }
     else {
-      tempStatus[letter] = 4;
+      tempStatus[tempLetter] = 4;
     }
 
-    setIsHint(false);
+    isHint = false;
 
-    if (letter >= props.question.length - 1){
+    if (tempLetter >= props.question.length - 1){
       props.updateScore(score);
     }
     else {
-      tempStatus[letter + 1] = 1
-      console.log(tempStatus)
-      setStatus({value: tempStatus})
+      tempStatus[tempLetter + 1] = 1
+
+      setStatus(tempStatus);
+      forceUpdate();
       
-      setLetter(letter + 1);
+      
     }
 
   }
 
-  const updateQueue = (val) => {
+  const compare = (a, b) => {
+    for (let i = 0; i < a.length; i++){
+      if (Math.abs(a[i] - b[i]) > 60){
+        return false;
+      }
+    }
 
-    // nextLetter(1);
-    // console.log(val)
-    // console.log(queue)
-    // if (val > 0.2){
-    //   setQueue(0)
-    // }
-    // else {
-    //   setQueue(queue + 1)
-    //   if (queue + 1 > 10){
-    //     nextLetter(1);
-    //   }
-    // }
+    return true;
+  }
+
+  const validate = (data) => {
+    let letterData = referenceData[props.question[getLetter(status)].toUpperCase()]
+
+    if (letterData.length == 1 && data.length == 1){
+      return compare(letterData[0], data[0]);
+    }
+    else if (letterData.length == 2 && data.length == 2){
+      // console.log("")
+      // console.log(compare(letterData[0], data[0]))
+      // console.log(compare(letterData[1], data[1]))
+      // console.log(compare(letterData[1], data[0]))
+      // console.log(compare(letterData[0], data[1]))
+      return (compare(letterData[0], data[0]) && compare(letterData[1], data[1])) || (compare(letterData[0], data[1]) && compare(letterData[1], data[0]))
+    }
+    else if (letterData.length == 1 && data.length == 2){
+      return compare(letterData[0], data[1]) || compare(letterData[0], data[0])
+    }
+
+    else {
+      return false;
+    }
+  }
+
+
+  const updateData = (data) => {
+    let decision = validate(data);
+    
+    
+    if (decision){
+      // console.log(decision)
+      queue += 1;
+      if (queue + 1 > 10){
+        nextLetter(1);
+      }
+    }
+    else {
+      queue = 0;
+    }
     
   }
 
-  // useEffect(() => {
-  //   document.addEventListener('keyup', event => {
-  //     if (event.code === 'Space') {
-  //       nextLetter(1) //whatever you want to do when space is pressed
-  //     }
-  //   })
-  // }, [])
-  // 0 - nothing, 1 - selected, 2 - green, 3 - orange, 4 - red
+
   return (
     <>
       <Modal onClose={() => setIsOpen(false)} isOpen={isOpen} isCentered>
@@ -102,7 +144,7 @@ export const Signing = (props) => {
             <ModalHeader>Hint</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Image src={"/isl/" + props.question[letter].toUpperCase() + ".png"} w="full" mb="5"/>
+              <Image src={"/isl/" + props.question[getLetter(status)].toUpperCase() + ".png"} w="full" mb="5"/>
             </ModalBody>
             
           </ModalContent>
@@ -113,7 +155,7 @@ export const Signing = (props) => {
           <Center>
             <HStack>
             {props.question.toUpperCase().split("").map((k, i) => {
-              let s = status.value[i]
+              let s = status[i]
 
               if (s == 0){
                 return (<Box h="10" w="10" p="2" borderRadius="3"><Center><Text  fontWeight="extrabold">{k}</Text></Center></Box>)
@@ -137,14 +179,16 @@ export const Signing = (props) => {
           </Center>
           
 
-          <VideoCapture updateQueue={updateQueue} letter={props.question[letter].toUpperCase()}/>
+          <VideoCapture updateData={updateData} letter={props.question[getLetter(status)].toUpperCase()}/>
 
+          
           <Center><Text fontWeight="bold" fontSize="2xl">Sign the letters of the above word.</Text></Center>
+
           
           <Center>
             <HStack>
               <Button onClick={() => {
-                setIsHint(true);
+                isHint = true;
                 setIsOpen(true);
               }} size="lg" colorScheme="orange" alignSelf="center">
                 Show Hint

@@ -14,7 +14,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [data, setData] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [finalScore, setFinalScore] = useState(0);
   
   const router = useRouter();
@@ -42,16 +42,16 @@ export default function App() {
     
 
     if (page == 10){
-      
+      console.log("score", finalScore + delta)
       addDoc(collection(db, "scores"), {
         email: email,
         number: data.lastQuiz.alphabets + 1,
-        score: finalScore,
+        score: finalScore + delta,
         type: 'alphabet'
       }).then(() => {
         
         updateDoc(doc(db, "users", data.docId), {
-          points: {alphabets: data.points.alphabets + finalScore, numbers: data.points.numbers}, lastQuiz: {alphabets: data.lastQuiz.alphabets + 1, numbers: data.lastQuiz.numbers}
+          points: {alphabets: data.points.alphabets + finalScore + delta, numbers: data.points.numbers}, lastQuiz: {alphabets: data.lastQuiz.alphabets + 1, numbers: data.lastQuiz.numbers}
         }).then(() => {
           console.log("success")
         })
